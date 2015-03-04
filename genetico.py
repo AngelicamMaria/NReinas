@@ -339,7 +339,7 @@ class GeneticoPermutaciones2(Genetico):
         if costo > 0:
             return costo
         return 0
-    raise NotImplementedError("¡Este metodo debe ser implementado!")
+        #raise NotImplementedError("¡Este metodo debe ser implementado!")
 
     def seleccion(self, poblacion, aptitud):
         """
@@ -358,6 +358,20 @@ class GeneticoPermutaciones2(Genetico):
         vector1 = [tam]
         vector2 = [tam]
         i = 0
+        for i in tam:
+            torneo1[i] = -3
+            torneo2[i] = -3
+        i = 0
+        x = 0
+        for i in tam:
+            for x in not range(torneo1):
+                torneo1[i] = x
+        i = 0
+        x = 0
+        for i in tam:
+            for x in not range(torneo1):
+                torneo2[i] = x
+
         x = 0
         y = 0
         pose = 0
@@ -370,6 +384,7 @@ class GeneticoPermutaciones2(Genetico):
                         vector1[pose] = x
                     else:
                         vector1[pose] = y
+                    pose += 1
             for i in tam:
                 if i % 2 == 0:
                     x = torneo2[i]
@@ -378,7 +393,7 @@ class GeneticoPermutaciones2(Genetico):
                         vector2[pose] = x
                     else:
                         vector2[pose] = y
-
+                    pose += 1
         if tam %2 != 0:
             for i in tam:
                 if i % 2 != 0:
@@ -398,7 +413,7 @@ class GeneticoPermutaciones2(Genetico):
                         vector2[pose] = y
         cruza(self, vector1, vector2)
 
-    raise NotImplementedError("¡Este metodo debe ser implementado!")
+#    raise NotImplementedError("¡Este metodo debe ser implementado!")
 
 
     def cruza(self, padre, madre):
@@ -429,13 +444,34 @@ class GeneticoPermutaciones2(Genetico):
         Desarrolla un método específico de mutación.
 
         """
+
     ###################################################################
     #                          20 PUNTOS
     ###################################################################
     #
     # ------ IMPLEMENTA AQUI TU CÓDIGO --------------------------------
-    #
-    raise NotImplementedError("¡Este metodo debe ser implementado!")
+    # el metodo de mutacion que se ha realisado es el intercambio de 2 puntos diferentes
+        poblacion_mutada = []
+        for individuo in poblacion:
+            individuo = list(individuo)
+            for i in range(len(individuo)):
+                PM = random.random()
+                if PM < self.prob_muta:
+                    x = random.randint(0, len(individuo) - 1)
+                    y = x
+                    while x == y:
+                        x = random.randint(0, len(individuo) - 1)
+
+                    aux = individuo[x]
+                    individuo[x] = individuo[y]
+                    individuo[y] = aux
+
+            poblacion_mutada.append(tuple(individuo))
+        return poblacion_mutada
+
+
+
+#    raise NotImplementedError("¡Este metodo debe ser implementado!")
 
 
     def prueba_genetico_nreinas(algo_genetico, problema, n_poblacion, n_generaciones):
@@ -463,11 +499,11 @@ if __name__ == "__main__":
     #   -- ¿Que reglas podrías establecer para asignar valores segun tu experiencia
     #
 
-    solucion = prueba_genetico_nreinas(algo_genetico=GeneticoPermutaciones1(0.05),
-                                       problema=nreinas.ProblemaNreinas(16),
-                                       n_poblacion=32,
-                                       n_generaciones=100)
-    print solucion
+    #solucion = prueba_genetico_nreinas(algo_genetico=GeneticoPermutaciones1(0.05),
+     #                                  problema=nreinas.ProblemaNreinas(16),
+      #                                 n_poblacion=32,
+       #                                n_generaciones=100)
+    #print solucion
 
     #################################################################################################
     #                          20 PUNTOS
