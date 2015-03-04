@@ -229,10 +229,10 @@ class GeneticoPermutaciones2(Genetico):
 
 
         matriz = []
-
-        for i in range(8):
+        reinas = len(individuo)
+        for i in range(reinas):
             matriz.append([])
-            for j in range(8):
+            for j in range(reinas):
                 matriz[i].append(None)
         i = 0
         j = 0
@@ -242,68 +242,68 @@ class GeneticoPermutaciones2(Genetico):
                 matriz[i][j] = individuo[t]
                 t += 1
         i = 0
-        for i in 8:
+        for i in reinas:
             x = 0
             y = 0
-            for x in 8:
-                for y in 8:
+            for x in reinas:
+                for y in reinas:
                     if matriz[x][y] == i:
                         #arriba y abajo
-                        if x > 0 and x < 8:
+                        if x > 0 and x < reinas:
                             j = x
                             while j >= 0:
-                                if 0 <= matriz[j][y] <= 7 and matriz[j][y] != i:
+                                if 0 <= matriz[j][y] < reinas and matriz[j][y] != i:
                                     costo += 1
                                     j -= 1
 
                             j = x
-                            while j < 8:
-                                if 0 <= matriz[j][y] <= 7 and matriz[j][y] != i:
+                            while j < reinas:
+                                if 0 <= matriz[j][y] < reinas and matriz[j][y] != i:
                                     costo += 1
                                     j += 1
                         if x == 0:
                             j = x
-                            while j < 8:
-                                if 0 <= matriz[j][y] <= 7 and matriz[j][y] != i:
+                            while j < reinas:
+                                if 0 <= matriz[j][y] < reinas and matriz[j][y] != i:
                                     costo += 1
                                     j += 1
                         if x == 7:
                             j = x
-                            while j >= 8:
-                                if 0 <= matriz[j][y] <= 7 and matriz[j][y] != i:
+                            while j >= 0:
+                                if 0 <= matriz[j][y] < reinas and matriz[j][y] != i:
                                     costo += 1
                                     j -= 1
 
                         # izquierda Derecha
                         if y == 0:
                             j = y
-                            while j < 8:
-                                if 0 <= matriz[x][j] <= 7 and matriz[x][j] != i:
+                            while j < reinas:
+                                if 0 <= matriz[x][j] < reinas and matriz[x][j] != i:
                                     costo += 1
                                     j += 1
-                        if y == 7:
+                        if y == reinas:
                             j = y
                             while j >= 0:
-                                if 0 <= matriz[x][j] <= 7 and matriz[x][j] != i:
+                                if 0 <= matriz[x][j] < reinas and matriz[x][j] != i:
                                     costo += 1
                                     j -= 1
-                        if y > 0 and y < 8:
+                        if y > 0 and y < reinas:
                             j = y
                             while j >= 0:
-                                if 0 <= matriz[x][j] <= 7 and matriz[x][j] != i:
+                                if 0 <= matriz[x][j] < reinas and matriz[x][j] != i:
                                     costo += 1
                                     j -= 1
 
                             j = y
-                            while j < 8:
-                                if 0 <= matriz[x][j] <= 7 and matriz[x][j] != i:
+                            while j < reinas:
+                                if 0 <= matriz[x][j] < reinas and matriz[x][j] != i:
                                     costo += 1
                                     j += 1
                         #Diagonales
                         j = x
                         t = y
                         while j >= 0:
-                            if 0<= matriz[j][t] <= 7 and matriz[j][t] != i:
+                            if 0 <= matriz[j][t] < reinas and matriz[j][t] != i:
                                 costo += 1
                                 j -= 1
                                 t -= 1
@@ -312,16 +312,16 @@ class GeneticoPermutaciones2(Genetico):
                         j = x
                         t = y
                         while j >= 0:
-                            if 0<= matriz[j][t] <= 7 and matriz[j][t] != i:
+                            if 0 <= matriz[j][t] < reinas and matriz[j][t] != i:
                                 costo += 1
                                 j -= 1
                                 t += 1
-                                if t == 7:
+                                if t == reinas:
                                     j = -1
                         j = x
                         t = y
-                        while j < 8:
-                            if 0<= matriz[j][t] <= 7 and matriz[j][t] != i:
+                        while j < reinas:
+                            if 0 <= matriz[j][t] < reinas and matriz[j][t] != i:
                                 costo += 1
                                 j += 1
                                 t -= 1
@@ -329,16 +329,16 @@ class GeneticoPermutaciones2(Genetico):
                                     j = 9
                         j = x
                         t = y
-                        while j < 8:
-                            if 0<= matriz[j][t] <= 7 and matriz[j][t] != i:
+                        while j < reinas:
+                            if 0 <= matriz[j][t] < reinas and matriz[j][t] != i:
                                 costo += 1
                                 j += 1
                                 t += 1
-                                if t == 7:
+                                if t == reinas:
                                     j = 9
         if costo > 0:
             return costo
-        return None
+        return 0
     raise NotImplementedError("¡Este metodo debe ser implementado!")
 
     def seleccion(self, poblacion, aptitud):
@@ -352,9 +352,51 @@ class GeneticoPermutaciones2(Genetico):
     #
     # ------ IMPLEMENTA AQUI TU CÓDIGO ----------------------------------
     #
+        tam = len(poblacion)
+        torneo1 = [tam]
+        torneo2 = [tam]
+        vector1 = [tam]
+        vector2 = [tam]
+        i = 0
+        x = 0
+        y = 0
+        pose = 0
+        if tam % 2 == 0:
+            for i in tam:
+                if i % 2 == 0:
+                    x = torneo1[i]
+                    y = torneo1[i+1]
+                    if aptitud[x] >= aptitud[y]:
+                        vector1[pose] = x
+                    else:
+                        vector1[pose] = y
+            for i in tam:
+                if i % 2 == 0:
+                    x = torneo2[i]
+                    y = torneo2[i+1]
+                    if aptitud[x] >= aptitud[y]:
+                        vector2[pose] = x
+                    else:
+                        vector2[pose] = y
 
-
-
+        if tam %2 != 0:
+            for i in tam:
+                if i % 2 != 0:
+                    x = torneo1[i]
+                    y = torneo1[i-1]
+                    if aptitud[x] >= aptitud[y]:
+                        vector1[pose] = x
+                    else:
+                        vector1[pose] = y
+            for i in tam:
+                if i % 2 != 0:
+                    x = torneo2[i]
+                    y = torneo2[i-1]
+                    if aptitud[x] >= aptitud[y]:
+                        vector2[pose] = x
+                    else:
+                        vector2[pose] = y
+        cruza(self, vector1, vector2)
 
     raise NotImplementedError("¡Este metodo debe ser implementado!")
 
